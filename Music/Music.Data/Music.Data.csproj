@@ -48,6 +48,7 @@
     <Compile Include="Entities\Models\AlbumSong.cs" />
     <Compile Include="Entities\Models\Musician.cs" />
     <Compile Include="Entities\Models\Song.cs" />
+    <Compile Include="Enums\Nationalities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
