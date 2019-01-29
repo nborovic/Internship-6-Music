@@ -2,16 +2,18 @@
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
-using Music.Data;
 using Music.Data.Entities.Models;
+using Music.Data.Enums;
 using Music.Domain.Repositories;
 
-namespace Music
+namespace Music.Presentation
 {
     class Program
     {
-        private static void Main(string[] args)
+        public static void Main(string[] args)
         {
+            // Connecting to database and pulling data
+
             var musiciansRepository = new MusiciansRepository();
             var albumsRepository = new AlbumsRepository();
             var songsRepository = new SongsRepository();
@@ -109,7 +111,7 @@ namespace Music
                 var albumDuration = 0;
                 Console.Write($"{albumSong.Key} duration: ");
                 albumDuration += albumSong.Sum(song => song.SongDuration);
-                Console.WriteLine($"{albumDuration / 60}:{albumDuration % 60} minutes\n");
+                Console.WriteLine($"{albumDuration / 60}:{albumDuration % 60} minutes");
             }
 
             // Task 6
@@ -125,14 +127,15 @@ namespace Music
                 select new {SongName = song.Name, AlbumId = album.Id, AlbumMusicianId = album.MusicianId, AlbumName = album.Name, AlbumRelease = album.ReleaseDate};
 
             Console.WriteLine("All albums with selected song: ");
-            // ReSharper disable once PossibleMultipleEnumeration
-            foreach (var album in allAlbumsContainingSelectedSong)
+
+            var albumsContainingSelectedSong = allAlbumsContainingSelectedSong.ToList();
+
+            foreach (var album in albumsContainingSelectedSong)
             {
                 Console.WriteLine($"{album.SongName} - {album.AlbumId} - {album.AlbumMusicianId} - {album.AlbumName} - {album.AlbumRelease:d}");
             }
 
-            // ReSharper disable once PossibleMultipleEnumeration
-            if (!allAlbumsContainingSelectedSong.Any())
+            if (!albumsContainingSelectedSong.Any())
                 Console.WriteLine($"No albums containing '{selectedSong}'!");
 
             // Task 7
@@ -146,7 +149,7 @@ namespace Music
 
             var allSongsOfSelectedMusicianAfterSelectedYear = from album in albumsList
                 join albumSong in albumsSongsList on album.Id equals albumSong.AlbumId
-                where album.ReleaseDate.Year > selectedReleaseYear
+                where album.ReleaseDate.Year >= selectedReleaseYear
                 join song in songsList on albumSong.SongId equals song.Id
                 join musician in musiciansList on album.MusicianId equals musician.Id
                 where selectedMusician != null && musician.Name.Contains(selectedMusician)
@@ -160,7 +163,7 @@ namespace Music
             {
                 Console.WriteLine($"{group.Key}: ");
                 foreach (var song in group)
-                    Console.WriteLine($"{song.SongName} - {song.MusicianName} - {song.AlbumName} - {song.ReleaseYear}");
+                    Console.WriteLine($"{song.SongName} - {song.MusicianName} - {song.ReleaseYear:d}");
             }
         }
 

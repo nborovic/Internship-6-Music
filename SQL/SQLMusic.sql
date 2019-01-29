@@ -4,7 +4,6 @@
 
 CREATE DATABASE Music
 
-
 /* Tables */
 
 CREATE TABLE Musician (
@@ -33,7 +32,7 @@ CREATE TABLE AlbumSong (
 
 /* Insert data */
 
-INSERT INTO Musician ([Name], Nationality) VALUES (N'Marshall Mathers', N'American'),
+INSERT INTO Musician ([Name], Nationality) VALUES (N'Mathers Marshall', N'American'),
 												  (N'The Score', N'American'),
 												  (N'TBF', N'Croatian')
 
@@ -47,7 +46,7 @@ INSERT INTO Album ([Name], MusicianId, ReleaseDate) VALUES (N'Kamikaze', 1, DATE
 INSERT INTO Song ([Name], Duration) VALUES (N'Greatest', '226'),
 										   (N'The Ringer', '337'),
 										   (N'Lucky You', '277'),
-										   (N'Venom', '269'),
+										   (N'Bad Meets Evil', '269'),
 										   (N'Not Alike', '287'),
 
 										   (N'My Name Is', '268'),
@@ -78,15 +77,11 @@ INSERT INTO Song ([Name], Duration) VALUES (N'Greatest', '226'),
 										   (N'Uvik Kontra', '273'),
 										   (N'Grad Spava', '305'),
 										   (N'Pozitivan Stav', '263'),
-										   (N'Vrag', '300')
+										   (N'Smak Svita', '300')
 
 INSERT INTO AlbumSong (AlbumId, SongId) VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5),
 											   (2, 6), (2, 7), (2, 8), (2, 9), (2, 10),
 											   (3, 11), (3, 12), (3, 13), (3, 14), (3, 15),
 											   (4, 16), (4, 17), (4, 18), (4, 19), (4, 20),
 											   (5, 21), (5, 22), (5, 23), (5, 24), (5, 25),
-											   (6, 26), (6, 27), (6, 28), (6, 29), (6, 30)
-												
-
-
-														   
+											   (6, 26), (6, 27), (6, 28), (6, 29), (6, 30)				   
