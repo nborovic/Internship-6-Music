@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dapper;
 using Music.Data;
 using Music.Data.Entities.Models;
@@ -13,7 +10,7 @@ namespace Music
 {
     class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var musiciansRepository = new MusiciansRepository();
             var albumsRepository = new AlbumsRepository();
@@ -37,6 +34,8 @@ namespace Music
 
             // Task 1
 
+            NewTask("Task 1");
+
             var orderedMusiciansList = musiciansList.OrderBy(musician => musician.Name);
 
             Console.WriteLine("All musicians ordered by name: ");
@@ -47,7 +46,9 @@ namespace Music
 
             // Task 2
 
-            Console.Write("\nChoose nationality (0-1): ");
+            NewTask("Task 2");
+
+            Console.Write("Choose nationality (0-1): ");
             var selectedNationality = (Nationalities)int.Parse(Console.ReadLine());
             var musiciansOfSelectedNationality = musiciansList
                 .Where(musician => musician.Nationality == selectedNationality).OrderBy(musician => musician.Id);
@@ -60,15 +61,17 @@ namespace Music
 
             // Task 3
 
+            NewTask("Task 3");
+
             var albumsMusician = from album in albumsList
                                  join musician in musiciansList on album.MusicianId equals musician.Id
-                                 select new { ReleaseDate = album.ReleaseDate, album.Name, Musician = musician.Name };
+                                 select new { Release = album.ReleaseDate, album.Name, Musician = musician.Name };
 
-            var albumsMusicianYears = from album in albumsMusician orderby album.ReleaseDate group album by album.ReleaseDate;
+            var albumsGroupedByRealease = from album in albumsMusician orderby album.Release group album by album.Release;
 
-            foreach (var year in albumsMusicianYears)
+            foreach (var year in albumsGroupedByRealease)
             {
-                Console.WriteLine($"\n{year.Key:d}: ");
+                Console.WriteLine($"{year.Key:d}: ");
                 foreach (var album in year)
                 {
                     Console.WriteLine($"{album.Musician} - {album.Name}");
@@ -77,15 +80,93 @@ namespace Music
 
             // Task 4
 
+            NewTask("Task 4");
+
             Console.Write("Input album name: ");
             var selectedText = Console.ReadLine();
             var albumsContainingSelectedText =
-                albumsList.Where(album => album.Name.Contains(selectedText)).OrderBy(album => album.Id);
+                albumsList.Where(album => selectedText != null && album.Name.Contains(selectedText)).OrderBy(album => album.Id);
 
             foreach (var album in albumsContainingSelectedText)
             {
                 Console.WriteLine(album.ToString());
             }
+
+            // Task 5
+
+            NewTask("Task 5");
+
+            Console.WriteLine("Duration of all albums: ");
+            var albumsSongs = from album in albumsList
+                join albumSong in albumsSongsList on album.Id equals albumSong.AlbumId
+                join song in songsList on albumSong.SongId equals song.Id
+                select new {AlbumName = album.Name, AlbumId = album.Id, SongDuration = song.Duration};
+
+            var albumsGroupedByName = from album in albumsSongs orderby album.AlbumName group album by album.AlbumName;
+
+            foreach (var albumSong in albumsGroupedByName)
+            {
+                var albumDuration = 0;
+                Console.Write($"{albumSong.Key} duration: ");
+                albumDuration += albumSong.Sum(song => song.SongDuration);
+                Console.WriteLine($"{albumDuration / 60}:{albumDuration % 60} minutes\n");
+            }
+
+            // Task 6
+
+            NewTask("Task 6");
+
+            Console.Write("Input name of the song: ");
+            var selectedSong = Console.ReadLine();
+            var allAlbumsContainingSelectedSong = from album in albumsList
+                join albumSong in albumsSongsList on album.Id equals albumSong.AlbumId
+                join song in songsList on albumSong.SongId equals song.Id
+                where selectedSong != null && song.Name.Contains(selectedSong)
+                select new {SongName = song.Name, AlbumId = album.Id, AlbumMusicianId = album.MusicianId, AlbumName = album.Name, AlbumRelease = album.ReleaseDate};
+
+            Console.WriteLine("All albums with selected song: ");
+            // ReSharper disable once PossibleMultipleEnumeration
+            foreach (var album in allAlbumsContainingSelectedSong)
+            {
+                Console.WriteLine($"{album.SongName} - {album.AlbumId} - {album.AlbumMusicianId} - {album.AlbumName} - {album.AlbumRelease:d}");
+            }
+
+            // ReSharper disable once PossibleMultipleEnumeration
+            if (!allAlbumsContainingSelectedSong.Any())
+                Console.WriteLine($"No albums containing '{selectedSong}'!");
+
+            // Task 7
+
+            NewTask("Task 7");
+
+            Console.Write("Input musician name: ");
+            var selectedMusician = Console.ReadLine();
+            Console.Write("Input release year: ");
+            var selectedReleaseYear = int.Parse(Console.ReadLine());
+
+            var allSongsOfSelectedMusicianAfterSelectedYear = from album in albumsList
+                join albumSong in albumsSongsList on album.Id equals albumSong.AlbumId
+                where album.ReleaseDate.Year > selectedReleaseYear
+                join song in songsList on albumSong.SongId equals song.Id
+                join musician in musiciansList on album.MusicianId equals musician.Id
+                where selectedMusician != null && musician.Name.Contains(selectedMusician)
+                select new {MusicianName = musician.Name, AlbumName = album.Name, SongName = song.Name, ReleaseYear = album.ReleaseDate};
+
+            var songsGroupedByAlbums = from song in allSongsOfSelectedMusicianAfterSelectedYear
+                orderby song.AlbumName
+                group song by song.AlbumName; 
+
+            foreach (var group in songsGroupedByAlbums)
+            {
+                Console.WriteLine($"{group.Key}: ");
+                foreach (var song in group)
+                    Console.WriteLine($"{song.SongName} - {song.MusicianName} - {song.AlbumName} - {song.ReleaseYear}");
+            }
+        }
+
+        public static void NewTask(string task)
+        {
+            Console.WriteLine($"\n{task}\n----------------------------------------------------\n");
         }
     }
 }
