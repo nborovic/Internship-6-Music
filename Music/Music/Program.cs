@@ -52,6 +52,7 @@ namespace Music.Presentation
 
             Console.Write("Choose nationality (0-1): ");
             var selectedNationality = (Nationalities)int.Parse(Console.ReadLine());
+
             var musiciansOfSelectedNationality = musiciansList
                 .Where(musician => musician.Nationality == selectedNationality).OrderBy(musician => musician.Id);
 
@@ -89,10 +90,14 @@ namespace Music.Presentation
             var albumsContainingSelectedText =
                 albumsList.Where(album => selectedText != null && album.Name.Contains(selectedText)).OrderBy(album => album.Id);
 
+            Console.WriteLine("All albums containing selected text: ");
             foreach (var album in albumsContainingSelectedText)
             {
                 Console.WriteLine(album.ToString());
             }
+
+            if (!albumsContainingSelectedText.Any())
+                Console.WriteLine($"No albums containing '{selectedText}'!");
 
             // Task 5
 
@@ -161,10 +166,13 @@ namespace Music.Presentation
 
             foreach (var group in songsGroupedByAlbums)
             {
-                Console.WriteLine($"{group.Key}: ");
+                Console.WriteLine($"\n{group.Key}: ");
                 foreach (var song in group)
                     Console.WriteLine($"{song.SongName} - {song.MusicianName} - {song.ReleaseYear:d}");
             }
+
+            if (!allSongsOfSelectedMusicianAfterSelectedYear.Any())
+                Console.WriteLine($"No songs of '{selectedMusician}' after the year of '{selectedReleaseYear}'!");
         }
 
         public static void NewTask(string task)
