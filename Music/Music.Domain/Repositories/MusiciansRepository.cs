@@ -16,5 +16,18 @@ namespace Music.Domain.Repositories
                 MusiciansList.Add(musician);
             }
         }
+
+        public void CreateRelations()
+        {
+            var albumsRepository = new AlbumsRepository().GetAll();
+
+            foreach (var musician in MusiciansList)
+                foreach (var album in albumsRepository)
+                    if (album.MusicianId == musician.Id)
+                    {
+                        musician.AlbumsList.Add(album);
+                        album.Musician = musician;
+                    }
+        }
     }
 }
