@@ -53,7 +53,6 @@ INSERT INTO Song ([Name], Duration) VALUES (N'Greatest', '226'),
 										   (N'Brain Damage', '226'),
 										   (N'Role Model', '205'),
 										   (N'Rock Bottom', '214'),
-										   (N'Bad Meets Evil', '253'),
 
 										   (N'Legend', '189'),
 										   (N'Unstoppable', '192'),
@@ -61,7 +60,6 @@ INSERT INTO Song ([Name], Duration) VALUES (N'Greatest', '226'),
 										   (N'Revolution', '231'),
 										   (N'Shakedown', '268'),
 
-										   (N'Unstoppable', '192'),
 										   (N'Money Run Low', '185'),
 										   (N'The Heat', '281'),
 										   (N'Going Home', '258'),
@@ -70,18 +68,17 @@ INSERT INTO Song ([Name], Duration) VALUES (N'Greatest', '226'),
 										   (N'Malo San Maka', '231'),
 										   (N'Nostalgična', '338'),
 										   (N'Alles Gut', '281'),
-										   (N'Smak Svita', '317'),
+										   (N'Smak Svita', '300'),
 										   (N'Život je lijep', '238'),
 
 										   (N'San', '293'),
 										   (N'Uvik Kontra', '273'),
 										   (N'Grad Spava', '305'),
-										   (N'Pozitivan Stav', '263'),
-										   (N'Smak Svita', '300')
+										   (N'Pozitivan Stav', '263')
 
 INSERT INTO AlbumSong (AlbumId, SongId) VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5),
-											   (2, 6), (2, 7), (2, 8), (2, 9), (2, 10),
-											   (3, 11), (3, 12), (3, 13), (3, 14), (3, 15),
-											   (4, 16), (4, 17), (4, 18), (4, 19), (4, 20),
-											   (5, 21), (5, 22), (5, 23), (5, 24), (5, 25),
-											   (6, 26), (6, 27), (6, 28), (6, 29), (6, 30)				   
+											   (2, 4), (2, 6), (2, 7), (2, 8), (2, 9),
+											   (3, 10), (3, 11), (3, 12), (3, 13), (3, 14),
+											   (4, 11), (4, 15), (4, 16), (4, 17), (4, 18),
+											   (5, 19), (5, 20), (5, 21), (5, 22), (5, 23),
+											   (6, 22), (6, 24), (6, 25), (6, 26), (6, 27)				   
